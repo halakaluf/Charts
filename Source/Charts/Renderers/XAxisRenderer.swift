@@ -90,23 +90,29 @@ open class XAxisRenderer: AxisRendererBase
         
         if xAxis.labelPosition == .top
         {
+            self.axis?.writtenLabelPosition = XAxis.LabelPosition.top.rawValue
             drawLabels(context: context, pos: viewPortHandler.contentTop - yOffset, anchor: CGPoint(x: 0.5, y: 1.0))
         }
         else if xAxis.labelPosition == .topInside
         {
+            self.axis?.writtenLabelPosition = XAxis.LabelPosition.topInside.rawValue
             drawLabels(context: context, pos: viewPortHandler.contentTop + yOffset + xAxis.labelRotatedHeight, anchor: CGPoint(x: 0.5, y: 1.0))
         }
         else if xAxis.labelPosition == .bottom
         {
+            self.axis?.writtenLabelPosition = XAxis.LabelPosition.bottom.rawValue
             drawLabels(context: context, pos: viewPortHandler.contentBottom + yOffset, anchor: CGPoint(x: 0.5, y: 0.0))
         }
         else if xAxis.labelPosition == .bottomInside
         {
+            self.axis?.writtenLabelPosition = XAxis.LabelPosition.bottomInside.rawValue
             drawLabels(context: context, pos: viewPortHandler.contentBottom - yOffset - xAxis.labelRotatedHeight, anchor: CGPoint(x: 0.5, y: 0.0))
         }
         else
         { // BOTH SIDED
+            self.axis?.writtenLabelPosition = XAxis.LabelPosition.top.rawValue
             drawLabels(context: context, pos: viewPortHandler.contentTop - yOffset, anchor: CGPoint(x: 0.5, y: 1.0))
+            self.axis?.writtenLabelPosition = XAxis.LabelPosition.bottom.rawValue
             drawLabels(context: context, pos: viewPortHandler.contentBottom + yOffset, anchor: CGPoint(x: 0.5, y: 0.0))
         }
     }
@@ -179,7 +185,7 @@ open class XAxisRenderer: AxisRendererBase
         let labelRotationAngleRadians = xAxis.labelRotationAngle.DEG2RAD
         
         let centeringEnabled = xAxis.isCenterAxisLabelsEnabled
-
+        
         let valueToPixelMatrix = transformer.valueToPixelMatrix
         
         var position = CGPoint(x: 0.0, y: 0.0)
@@ -210,7 +216,7 @@ open class XAxisRenderer: AxisRendererBase
             if viewPortHandler.isInBoundsX(position.x)
             {
                 let label = xAxis.valueFormatter?.stringForValue(xAxis.entries[i], axis: xAxis) ?? ""
-
+                
                 let labelns = label as NSString
                 
                 if xAxis.isAvoidFirstLastClippingEnabled
@@ -389,15 +395,15 @@ open class XAxisRenderer: AxisRendererBase
         
         let label = limitLine.label
         guard limitLine.drawLabelEnabled, !label.isEmpty else { return }
-
+        
         let labelLineHeight = limitLine.valueFont.lineHeight
-
+        
         let xOffset: CGFloat = limitLine.lineWidth + limitLine.xOffset
         let attributes: [NSAttributedString.Key : Any] = [
             .font : limitLine.valueFont,
             .foregroundColor : limitLine.valueTextColor
         ]
-
+        
         let (point, align): (CGPoint, NSTextAlignment)
         switch limitLine.labelPosition {
         case .topRight:
@@ -406,21 +412,21 @@ open class XAxisRenderer: AxisRendererBase
                 y: viewPortHandler.contentTop + yOffset
             )
             align = .left
-
+            
         case .bottomRight:
             point = CGPoint(
                 x: position.x + xOffset,
                 y: viewPortHandler.contentBottom - labelLineHeight - yOffset
             )
             align = .left
-
+            
         case .topLeft:
             point = CGPoint(
                 x: position.x - xOffset,
                 y: viewPortHandler.contentTop + yOffset
             )
             align = .right
-
+            
         case .bottomLeft:
             point = CGPoint(
                 x: position.x - xOffset,
@@ -428,7 +434,7 @@ open class XAxisRenderer: AxisRendererBase
             )
             align = .right
         }
-
+        
         ChartUtils.drawText(
             context: context,
             text: label,

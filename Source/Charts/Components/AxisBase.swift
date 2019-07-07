@@ -70,6 +70,9 @@ open class AxisBase: ComponentBase
     /// the flag can be used to turn off the antialias for grid lines
     @objc open var gridAntialiasEnabled = true
     
+    /// the position where the label should be written
+    @objc public var writtenLabelPosition = Int(0)
+    
     /// the actual array of entries
     @objc open var entries = [Double]()
     
